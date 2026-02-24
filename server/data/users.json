@@ -52,5 +52,29 @@
     "email": "tell@gmail.com",
     "password": "123456",
     "role": "user"
+  },
+  {
+    "id": "user_1767927182197",
+    "email": "thusharatk07@gmail.com",
+    "password": "Thushara@7",
+    "role": "user"
+  },
+  {
+    "id": "user_1767927251249",
+    "email": "vasavi@gmail.com",
+    "password": "123456",
+    "role": "admin"
+  },
+  {
+    "id": "user_1771915815154",
+    "email": "thusharasamyogitha.ai@gmail.com",
+    "password": "Thushara@7",
+    "role": "user"
+  },
+  {
+    "id": "user_1771915887494",
+    "email": "2400032067@kluniversity.in",
+    "password": "Thushara@7",
+    "role": "user"
   }
 ]
