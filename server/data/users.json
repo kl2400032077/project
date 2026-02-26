@@ -94,5 +94,11 @@
     "email": "thushara8@gmail.com",
     "password": "Thushara@7",
     "role": "admin"
+  },
+  {
+    "id": "user_1772104216236",
+    "email": "thushara00@gmail.com",
+    "password": "Thushara@7",
+    "role": "user"
   }
 ]
