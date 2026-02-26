@@ -1,17 +1,21 @@
-export default async function handler(req, res) {
+import { users } from "../_data.js";
+
+export default function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
   const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(400).json({ error: "Missing credentials" });
+  const user = users.find(u => u.email === email && u.password === password);
+
+  if (!user) {
+    return res.status(401).json({ error: "Invalid email or password" });
   }
 
-  // TEMP: fake success login
   return res.status(200).json({
-    email,
-    role: "user",
+    id: user.id,
+    email: user.email,
+    role: user.role,
   });
 }
