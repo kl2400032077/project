@@ -76,5 +76,23 @@
     "email": "2400032067@kluniversity.in",
     "password": "Thushara@7",
     "role": "user"
+  },
+  {
+    "id": "user_1772081521019",
+    "email": "fullstack@gmail.com",
+    "password": "Thushara@7",
+    "role": "user"
+  },
+  {
+    "id": "user_1772082673902",
+    "email": "thushara2@gmail.com",
+    "password": "Thushara@7",
+    "role": "user"
+  },
+  {
+    "id": "user_1772083773071",
+    "email": "thushara8@gmail.com",
+    "password": "Thushara@7",
+    "role": "admin"
   }
 ]
