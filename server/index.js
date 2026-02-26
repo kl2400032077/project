@@ -419,20 +419,24 @@ app.get("/api/admin/health-data", (req, res) => {
   });
   res.json(allHealthData);
 });
-
-const port = process.env.PORT || 5174;
+// 1️⃣ Imports (always at the top)
+import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 
+// 2️⃣ App setup
+const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const port = process.env.PORT || 3000;
 
-// Serve React frontend
-app.use(express.static(path.join(__dirname, '../dist')));
-
+// 3️⃣ Serve React frontend (after all API routes)
+app.use(express.static(path.join(__dirname, 'dist')));
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
+
+// 4️⃣ Start server
 app.listen(port, '0.0.0.0', () => {
   console.log(`🚀 Server running on http://localhost:${port}`);
   console.log(`📊 Health check: http://localhost:${port}/api/health`);
