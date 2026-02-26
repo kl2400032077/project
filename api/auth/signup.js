@@ -1,4 +1,7 @@
-import { users } from "../_data.js";
+import fs from "fs";
+import path from "path";
+
+const filePath = path.join(process.cwd(), "data", "users.json");
 
 export default function handler(req, res) {
   if (req.method !== "POST") {
@@ -10,6 +13,8 @@ export default function handler(req, res) {
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password required" });
   }
+
+  const users = JSON.parse(fs.readFileSync(filePath, "utf-8"));
 
   const existingUser = users.find(u => u.email === email);
   if (existingUser) {
@@ -24,6 +29,8 @@ export default function handler(req, res) {
   };
 
   users.push(newUser);
+
+  fs.writeFileSync(filePath, JSON.stringify(users, null, 2));
 
   return res.status(200).json({
     id: newUser.id,
