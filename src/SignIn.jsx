@@ -17,7 +17,12 @@ const SignIn = () => {
     try {
       const requestBody = { email, password };
 
-      const response = await fetch("/api/auth/signin", {
+      const API =
+  import.meta.env.PROD
+    ? "/api/auth/signin" // Vercel serverless
+    : "http://localhost:5174/api/auth/login"; // Local Express
+
+const response = await fetch(API, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
