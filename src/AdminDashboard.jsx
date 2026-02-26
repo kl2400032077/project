@@ -51,46 +51,51 @@ const AdminDashboard = () => {
     vitaminD_IU: 0
   });
 
-  useEffect(() => {
-    let mounted = true;
-    async function load() {
-      setLoading(true);
-      setError("");
-      try {
-        const [fRes, rRes, uRes] = await Promise.all([
-          fetch("/api/foods"),
-          fetch("/api/rdas"),
-          fetch("/api/users")
-        ]);
-        const [fJson, rJson, uJson] = await Promise.all([
-          fRes.json(),
-          rRes.json(),
-          uRes.ok ? uRes.json() : [],
-          fetch("/api/admin/health-data").then(r => r.ok ? r.json() : []).catch(() => [])
-        ]);
-        if (!mounted) return;
-        setFoods(fJson);
-        setRdas(rJson);
-        setUsers(uJson);
-        
-        // Load health data
-        try {
-          const healthRes = await fetch("/api/admin/health-data");
-          if (healthRes.ok) {
-            const healthJson = await healthRes.json();
-            setUserHealthData(healthJson);
-            calculateStats(fJson, uJson, healthJson);
-          }
-        } catch {}
-      } catch (e) {
-        setError("Failed to load data");
-      } finally {
-        if (mounted) setLoading(false);
+useEffect(() => {
+  let mounted = true;
+
+  async function load() {
+    setLoading(true);
+    setError("");
+
+    try {
+      const [fRes, rRes, uRes, healthRes] = await Promise.all([
+        fetch("/api/foods"),
+        fetch("/api/rdas"),
+        fetch("/api/users"),
+        fetch("/api/admin/health-data")
+      ]);
+
+      if (!fRes.ok || !rRes.ok || !uRes.ok || !healthRes.ok) {
+        throw new Error("Failed to load data");
       }
+
+      const [fJson, rJson, uJson, healthJson] = await Promise.all([
+        fRes.json(),
+        rRes.json(),
+        uRes.json(),
+        healthRes.json()
+      ]);
+
+      if (!mounted) return;
+
+      setFoods(fJson);
+      setRdas(rJson);
+      setUsers(uJson);
+      setUserHealthData(healthJson.data); // IMPORTANT: .data
+
+      calculateStats(fJson, uJson, healthJson.data);
+
+    } catch (e) {
+      setError("Failed to load data");
+    } finally {
+      if (mounted) setLoading(false);
     }
-    load();
-    return () => { mounted = false; };
-  }, []);
+  }
+
+  load();
+  return () => { mounted = false; };
+}, []);
 
   const calculateStats = (foodsList, usersList, healthData) => {
     const deficits = {};
