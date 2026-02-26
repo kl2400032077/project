@@ -1,36 +1,38 @@
 export default function handler(req, res) {
-  if (req.method !== "GET") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
-
-  try {
-    // Example dummy data — replace with DB later
-    const healthData = [
-      {
-        id: 1,
-        user: "john@example.com",
-        calories: 2200,
-        protein: 90,
-        carbs: 250,
-        fat: 70,
-      },
-      {
-        id: 2,
-        user: "sarah@example.com",
-        calories: 1800,
-        protein: 75,
-        carbs: 200,
-        fat: 60,
-      },
-    ];
-
-    res.status(200).json({
+  if (req.method === "GET") {
+    return res.status(200).json({
       success: true,
-      data: healthData,
-    });
-  } catch (error) {
-    res.status(500).json({
-      error: "Failed to load health data",
+      data: [
+        {
+          id: 1,
+          name: "Apple",
+          calories: 95,
+          protein: 0.5,
+          iron: 0.1,
+          vitaminC: 8.4,
+          calcium: 11,
+          vitaminD: 0,
+        },
+        {
+          id: 2,
+          name: "Banana",
+          calories: 105,
+          protein: 1.3,
+          iron: 0.3,
+          vitaminC: 10.3,
+          calcium: 5,
+          vitaminD: 0,
+        },
+      ],
     });
   }
+
+  if (req.method === "POST") {
+    return res.status(200).json({
+      success: true,
+      message: "Food added (temporary mock)",
+    });
+  }
+
+  return res.status(405).json({ error: "Method not allowed" });
 }
