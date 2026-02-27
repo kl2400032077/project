@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { apiFetch } from "./apiClient";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -44,7 +45,7 @@ const SignUp = () => {
       
       console.log('Sending signup request:', { email: requestBody.email, role: requestBody.role, passwordLength: requestBody.password.length });
       
-      const response = await fetch('/api/auth/signup', {
+      const response = await apiFetch('/api/auth/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { DEFAULT_FOODS, findRdaForAge } from "./nutritionData";
 import { estimateMealNutrients, computeDeficits, suggestFoodsForDeficits, generateDailyPlan } from "./recommendationEngine";
+import { apiFetch } from "./apiClient";
 
 const NutrientDeficient = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const NutrientDeficient = () => {
   const loadUserData = async (userData) => {
     try {
       const userId = userData.id || userData.email || "demo-user";
-      const response = await fetch(`/api/user/health-data?userId=${userId}`);
+      const response = await apiFetch(`/api/user/health-history/${userId}`);
       if (response.ok) {
         const data = await response.json();
         if (data.length > 0) {
@@ -44,7 +45,7 @@ const NutrientDeficient = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch("/api/foods");
+        const res = await apiFetch("/api/foods");
         if (res.ok) {
           const data = await res.json();
           setFoods([...DEFAULT_FOODS, ...data.filter(f => !DEFAULT_FOODS.some(df => df.id === f.id))]);

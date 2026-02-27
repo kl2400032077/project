@@ -13,6 +13,7 @@ import {
   Legend
 } from "chart.js";
 import { DEFAULT_FOODS, findRdaForAge } from "./nutritionData";
+import { apiFetch } from "./apiClient";
 import { estimateMealNutrients, computeDeficits, suggestFoodsForDeficits, generateDailyPlan } from "./recommendationEngine";
 
 ChartJS.register(
@@ -107,7 +108,7 @@ const UserDashboard = () => {
     
     if (syncServer) {
       try {
-        await fetch(`/api/meals/${userId}`, {
+        await apiFetch(`/api/meals/${userId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newEntry)
@@ -142,7 +143,7 @@ const UserDashboard = () => {
     try {
       const currentTotals = estimateMealNutrients(currentEntries);
       const currentDeficits = computeDeficits(Number(age) || 12, currentTotals);
-      await fetch("/api/user/health-data", {
+      await apiFetch("/api/user/health-data", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -172,7 +173,7 @@ const UserDashboard = () => {
     let mounted = true;
     (async () => {
       try {
-        const res = await fetch('/api/foods');
+        const res = await apiFetch('/api/foods');
         if (res.ok) {
           const data = await res.json();
           if (mounted) {
@@ -194,13 +195,13 @@ const UserDashboard = () => {
     let mounted = true;
     (async () => {
       try {
-        const res = await fetch(`/api/meals/${userId}`);
+        const res = await apiFetch(`/api/meals/${userId}`);
         if (!res.ok) return;
         const data = await res.json();
         if (mounted) setEntries(data);
         
         // Load history
-        const historyRes = await fetch(`/api/user/health-history/${userId}`);
+        const historyRes = await apiFetch(`/api/user/health-history/${userId}`);
         if (historyRes.ok) {
           const historyData = await historyRes.json();
           if (mounted) setHistory(historyData);

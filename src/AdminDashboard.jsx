@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { apiFetch } from "./apiClient";
 import { Bar, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -57,9 +58,9 @@ const AdminDashboard = () => {
 
       try {
         const [fRes, rRes, uRes] = await Promise.all([
-          fetch("/api/foods"),
-          fetch("/api/rdas"),
-          fetch("/api/users")
+          apiFetch("/api/foods"),
+          apiFetch("/api/rdas"),
+          apiFetch("/api/users")
         ]);
 
         if (!fRes.ok || !rRes.ok || !uRes.ok) {
@@ -118,7 +119,7 @@ const AdminDashboard = () => {
     if (!canAddFood) return;
     try {
       setError("");
-      const res = await fetch("/api/foods", {
+      const res = await apiFetch("/api/foods", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -156,7 +157,7 @@ const AdminDashboard = () => {
     if (!confirm("Are you sure you want to delete this food?")) return;
     try {
       setError("");
-      const res = await fetch(`/api/foods/${id}`, { method: "DELETE" });
+      const res = await apiFetch(`/api/foods/${id}`, { method: "DELETE" });
       if (!res.ok && res.status !== 204) throw new Error("Failed to delete food");
       setFoods(foods.filter(f => f.id !== id));
     } catch (e) {
@@ -167,7 +168,7 @@ const AdminDashboard = () => {
   async function updateRda(id, field, value) {
     try {
       setError("");
-      const res = await fetch(`/api/rdas/${id}`, {
+      const res = await apiFetch(`/api/rdas/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ [field]: Number(value) || 0 })
