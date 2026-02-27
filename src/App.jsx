@@ -209,7 +209,7 @@ function Header() {
     <>
       <header className="app-header" style={{ padding: "16px 24px", position: "relative", zIndex: 1000 }}>
         <div className="brand" style={{ cursor: "pointer", fontSize: "28px", fontWeight: "700" }} onClick={() => navigate("/home")}>
-          🥗 Diet Balance
+          🥗 NutriTrack
         </div>
         <nav className="nav">
           {!user ? (
@@ -592,7 +592,7 @@ function AppContent() {
           <Route path="/nutrient-deficient" element={<NutrientDeficient />} />
         </Routes>
         <footer style={{ textAlign: "center", color: "#6b7280", margin: "24px 0", padding: "24px 0" }}>
-          <p style={{ margin: "8px 0" }}>© {new Date().getFullYear()} Diet Balance - Advanced Nutrition Analysis System</p>
+          <p style={{ margin: "8px 0" }}>© {new Date().getFullYear()} NutriTrack - Advanced Nutrition Analysis System</p>
           <p style={{ margin: "8px 0", fontSize: "14px" }}>
             Helping everyone achieve optimal nutritional health
           </p>

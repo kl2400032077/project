@@ -90,7 +90,7 @@ const SignIn = () => {
                 backgroundClip: "text",
               }}
             >
-              Welcome to Diet Balance
+              Welcome to NutriTrack
             </h2>
             <p style={{ color: "#6b7280", marginTop: 0, fontSize: "18px" }}>
               Analyze meals, spot deficits, and get smart personalized recommendations.

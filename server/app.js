@@ -76,44 +76,22 @@ app.post("/api/auth/signup", (req, res) => {
 });
 
 app.post("/api/auth/login", (req, res) => {
-  try {
-    const { email, password } = req.body || {};
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required" });
-    }
-    let loadedUsers;
-    try {
-      loadedUsers = loadUsers();
-      users = loadedUsers;
-    } catch {
-      return res.status(500).json({ error: "Failed to load user data. Please try again later." });
-    }
-    if (!Array.isArray(users)) {
-      users = [];
-    }
-    let user = null;
-    try {
-      user = users.find(u => {
-        if (!u || !u.email || !u.password) return false;
-        return u.email.toLowerCase() === email.toLowerCase() && u.password === password;
-      });
-    } catch {
-      return res.status(500).json({ error: "Error processing login request" });
-    }
-    if (!user) {
-      return res.status(401).json({ error: "Invalid email or password" });
-    }
-    try {
-      const { password: _, ...userResponse } = user;
-      res.json(userResponse);
-    } catch {
-      return res.status(500).json({ error: "Error creating login response" });
-    }
-  } catch {
-    if (!res.headersSent) {
-      res.status(500).json({ error: "Internal server error. Please try again." });
-    }
+  const { email, password } = req.body || {};
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
   }
+  if (!Array.isArray(users)) {
+    users = [];
+  }
+  const user = users.find(u => {
+    if (!u || !u.email || !u.password) return false;
+    return u.email.toLowerCase() === email.toLowerCase() && u.password === password;
+  });
+  if (!user) {
+    return res.status(401).json({ error: "Invalid email or password" });
+  }
+  const { password: _, ...userResponse } = user;
+  res.json(userResponse);
 });
 
 app.get("/api/foods", (req, res) => {

@@ -150,7 +150,7 @@ const SignUp = () => {
         }}>
         <h2 style={{ marginTop: 0, color: "#22c55e" }}>✅ Account Created!</h2>
         <p style={{ color: "#6b7280", marginTop: 0 }}>
-          Welcome to Diet Balance, {formData.email}!
+          Welcome to NutriTrack, {formData.email}!
         </p>
         <div style={{ padding: 16, backgroundColor: "#f0f9ff", borderRadius: 8, marginTop: 16 }}>
           <h4>Account Details:</h4>
@@ -195,7 +195,7 @@ const SignUp = () => {
       }}>
         <h2 style={{ marginTop: 0, fontSize: "32px" }}>Create Account</h2>
         <p style={{ color: "#6b7280", marginTop: 0, marginBottom: 24, fontSize: "18px" }}>
-          Join Diet Balance to track your nutrition
+          Join NutriTrack to track your nutrition
         </p>
       
       <form onSubmit={handleSubmit}>
