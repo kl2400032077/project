@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "server": "node server/index.js",
+    "server:free": "powershell -NoProfile -Command \"$p = Get-NetTCPConnection -LocalPort 2026 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique; if ($p) { $p | ForEach-Object { Stop-Process -Id $_ -Force -ErrorAction SilentlyContinue }; Write-Host 'Freed port 2026.' } else { Write-Host 'Nothing listening on 2026.' }\"",
+    "server:restart": "npm run server:free && npm run server",
     "dev:full": "concurrently \"npm:server\" \"npm:dev\"",
     "build": "vite build",
     "lint": "eslint .",
@@ -15,11 +17,12 @@
     "chart.js": "^4.5.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "serverless-http": "^3.2.0",
     "react": "^19.1.1",
     "react-chartjs-2": "^5.3.0",
     "react-dom": "^19.1.1",
-    "react-router-dom": "^7.9.1"
+    "react-router-dom": "^7.9.1",
+    "serverless-http": "^3.2.0",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

@@ -1,10 +1,37 @@
 import express from "express";
 import cors from "cors";
+import swaggerUi from "swagger-ui-express";
 import { loadUsers, saveUsers } from "./storage.js";
+import { getOpenApiSpec } from "./openapi-spec.js";
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+const openApiSpec = getOpenApiSpec();
+// Serve our generated HTML for the UI *before* static files. The default
+// swagger-ui-dist/index.html loads swagger-initializer.js, which hardcodes
+// petstore.swagger.io — that is why the Explore bar showed Petstore.
+const swaggerUiHandler = swaggerUi.setup(openApiSpec, {
+  customSiteTitle: "NutriTrack API — Swagger",
+  explorer: false,
+});
+app.use("/swagger-ui", (req, res, next) => {
+  const p = (req.path || "/").replace(/\/$/, "") || "/";
+  if (p === "/" || p === "/index.html") {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    return swaggerUiHandler(req, res);
+  }
+  next();
+});
+app.use("/swagger-ui", ...swaggerUi.serve);
+app.get("/api-docs", (req, res) => {
+  res.redirect(302, "/swagger-ui/index.html");
+});
+app.get("/openapi.json", (req, res) => {
+  res.json(openApiSpec);
+});
 
 // Health check
 app.get('/api/health', (req, res) => {
@@ -420,10 +447,11 @@ app.get("/api/admin/health-data", (req, res) => {
   res.json(allHealthData);
 });
 
-const port = process.env.PORT || 5174;
+const port = process.env.PORT || 2026;
 app.listen(port, '0.0.0.0', () => {
   console.log(`🚀 Server running on http://localhost:${port}`);
   console.log(`📊 Health check: http://localhost:${port}/api/health`);
+  console.log(`📘 Swagger UI: http://localhost:${port}/swagger-ui/index.html`);
 }).on('error', (err) => {
   console.error('Server error:', err);
   if (err.code === 'EADDRINUSE') {
